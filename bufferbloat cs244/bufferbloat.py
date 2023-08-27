@@ -82,11 +82,11 @@ class BBTopo(Topo):
 
         # TODO: Add links with appropriate characteristics
         for i in range(0, n):
-            if i == 0:
-                self.addLink(hosts[i], switch, bw=args.bw_host, delay=args.delay,
+            if (i != 0):
+                 self.addLink(hosts[i], switch, bw=args.bw_net, delay=args.delay,
                              max_queue_size=args.maxq)
             else:
-                self.addLink(hosts[i], switch, bw=args.bw_net, delay=args.delay,
+                self.addLink(hosts[i], switch, bw=args.bw_host, delay=args.delay,
                              max_queue_size=args.maxq)
         return
 
@@ -159,6 +159,7 @@ def bufferbloat():
     # links.
     dumpNodeConnections(net.hosts)
     # This performs a basic all pairs ping test.
+
     net.pingAll()
 
     # Start all the monitoring processes
@@ -173,8 +174,7 @@ def bufferbloat():
     # qmon = start_qmon(iface='s0-eth2',
     #                  outfile='%s/q.txt' % (args.dir))
     qmon = None
-    qmon = start_qmon(iface='s0-eth2',
-                        outfile='%s/q.txt' % (args.dir))
+    qmon = start_qmon(iface='s0-eth2',outfile='%s/q.txt' % (args.dir))
 
     # TODO: Start iperf, webservers, etc.
     start_iperf(net)
@@ -195,7 +195,7 @@ def bufferbloat():
     # loop below useful.
     start_time = time()
     time_measures = []
-    while True:
+    while 1:
         # do the measurement (say) 3 times.
         now = time()
         delta = now - start_time
